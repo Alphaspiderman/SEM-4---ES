@@ -1,0 +1,34 @@
+; Linear Search
+	AREA RESET, DATA, READONLY
+	EXPORT __Vectors
+__Vectors
+	DCD 0x10001000
+	DCD Reset_Handler
+	ALIGN
+	AREA mycode, CODE, READONLY
+	ENTRY
+	EXPORT Reset_Handler
+Reset_Handler
+	LDR R0, =VAL
+	LDR R1, [R0]
+	LDR R0, =LIST
+	LDR R2, =eol
+	
+LOOP
+	
+	LDR R3, [R0], #4
+	CMP R3, R1
+	BEQ FOUND
+	CMP R0, R2
+	BNE LOOP
+	
+HERE B HERE
+
+FOUND 
+	MOV R4, #1
+	B HERE
+
+LIST DCD 65,55,45,35,25,15,10,9,6,4
+eol DCD 0
+VAL DCD 25
+	END

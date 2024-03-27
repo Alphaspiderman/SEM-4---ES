@@ -1,0 +1,30 @@
+; Factorial
+	AREA RESET, DATA, READONLY
+	EXPORT __Vectors
+__Vectors
+	DCD 0x10001000
+	DCD Reset_Handler
+	ALIGN
+	AREA mycode, CODE, READONLY
+	ENTRY
+	EXPORT Reset_Handler
+Reset_Handler
+	LDR R0, =NUM
+	LDR R1, [R0]
+	
+FACT
+	CMP R1, #1
+	BLS	ENDCASE
+	PUSH {R1, LR}
+	SUB R1, R1, #1
+	BL FACT
+	POP {R2, LR}
+	MUL R1, R2, R1
+	BX LR
+
+ENDCASE
+	MOV R1, #1
+	BX LR
+
+NUM DCD 4
+	END

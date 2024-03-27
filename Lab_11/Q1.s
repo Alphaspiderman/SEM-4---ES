@@ -1,0 +1,49 @@
+; Bubble
+	AREA RESET, DATA, READONLY
+	EXPORT __Vectors
+__Vectors
+	DCD 0x10001000
+	DCD Reset_Handler
+	ALIGN
+	AREA mycode, CODE, READONLY
+	ENTRY
+	EXPORT Reset_Handler
+Reset_Handler
+	LDR R0, =LIST
+	LDR R1, =DST
+	LDR R2, =eol
+	
+CPY
+	CMP R0, R2
+	LDR R3, [R0], #4
+	STR R3, [R1], #4
+	ADD R5, R5, #1
+	BNE CPY
+	
+	SUB R5, R5, #1
+	
+	; R5 is outer count
+BUB
+	MOV R6, R5 ; Inner Count
+	SUBS R6, R6, #1
+	BEQ DONE
+	LDR R1, =DST
+	
+BUBB
+	LDR R3, [R1]
+	LDR R4, [R1, #4]
+	CMP R3, R4
+	STRGT R3, [R1, #4]
+	STRGT R4, [R1]
+	ADD R1, R1, #4
+	SUBS R6, R6, #1
+	BNE BUBB
+	SUBS R5, R5, #1
+	BNE BUB
+DONE B DONE
+
+LIST DCD 65,55,45,35,25,15,10,9,6,4
+eol DCD 0
+	AREA mydata, DATA, READWRITE
+DST DCD 0,0,0,0,0,0,0,0,0,0,0
+	END
